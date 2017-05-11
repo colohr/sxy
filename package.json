@@ -1,0 +1,39 @@
+{
+  "name": "sxy",
+  "version": "0.0.1",
+  "description": "Education-inspired & simple GraphQL express server with support for mutliple graphs & graphiql endpoints.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colohr/sxy.git"
+  },
+  "keywords": ["GraphQL","Education","Node","Express"],
+  "author": "colohr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colohr/sxy/issues"
+  },
+  "homepage": "https://github.com/colohr/sxy#readme",
+  "dependencies": {
+    "basic-auth": "^1.1.0",
+    "body-parser": "^1.16.1",
+    "cheerio": "^0.22.0",
+    "compression": "^1.6.2",
+    "es6-template-strings": "^2.0.1",
+    "express": "^4.14.1",
+    "firebase": "^3.6.8",
+    "firebase-admin": "^4.2.1",
+    "fxy": "0.0.8",
+    "graphql": "^0.9.1",
+    "graphql-server-express": "^0.6.0",
+    "graphql-tools": "^0.10.0",
+    "lodash": "^4.17.4",
+    "moment-timezone": "^0.5.11",
+    "mongodb": "^2.2.22",
+    "node-fetch": "^1.6.3",
+    "sequelize": "^3.30.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

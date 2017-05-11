@@ -1,0 +1,23 @@
+{
+  "admin":{
+    "path":"ui",
+    "users":{
+      "user":"pass"
+    }
+  },
+  "firebase":null,
+  "graph":{
+    "main":"/api",
+    "ui":"/ui",
+    "path":"/graph",
+    "structs":"/structs"
+  },
+  "host":"http://localhost",
+  "path":"/api",
+  "port":7777,
+  "root":"/",
+  "statics":{
+    "public":true,
+    "/bower_components":"bower_components"
+  }
+}

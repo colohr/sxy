@@ -1,0 +1,12 @@
+{
+  "verbose": false,
+  "ignore": [
+    "node_modules"
+  ],
+  "env": {
+    "NODE_ENV": "development",
+    "BABEL_DISABLE_CACHE": 1
+  },
+  "ext": ".js,.json,.graphql",
+  "watch": "./"
+}
