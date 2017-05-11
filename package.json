@@ -1,6 +1,6 @@
 {
   "name": "sxy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Education-inspired & simple GraphQL express server with support for mutliple graphs & graphiql endpoints.",
   "main": "./index.js",
   "repository": {
