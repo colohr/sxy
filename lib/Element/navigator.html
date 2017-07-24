@@ -1,0 +1,68 @@
+<template id="type-navigator">
+    <style>
+        @import "/modules/wwi/component/design/host.css";
+
+        :host{
+
+        }
+        wwe-button{
+	        --height:26px;
+	        border:none;
+	        background-color: var(--toolbar-text,whitesmoke);
+	        color:var(--toolbar-button,var(--grape));
+	        font-size:16px;
+	        font-weight: bold;
+        }
+        wwe-button[name="next"],
+        wwe-button[name="back"]{
+	        width:30px;
+	        min-width:30px;
+	        height:30px;
+	        overflow: hidden;
+        }
+        wwe-button[name="next"] [icon],
+        wwe-button[name="back"] [icon]{
+	        font-size:44px;
+	        position: relative;
+	        top: -5px;
+	        text-align: center;
+        }
+        wwe-button[name="next"] [icon]{
+	        left:6px;
+        }
+        wwe-button[name="back"] [icon]{
+	        left:2px;
+        }
+
+    </style>
+
+	<wwe-button name="back" aria-selected="false">
+		<div icon gui horizontal center-center>&ltrif;</div>
+	</wwe-button>
+	<wwe-button name="next" aria-selected="false">
+		<div icon gui horizontal center-center>&rtrif;</div>
+	</wwe-button>
+</template>
+<script>
+    (function(doc){
+        const TypeNavigator = wwi.element(doc)
+        TypeNavigator(class extends TypeNavigator.Element{
+            connected(){
+            	this.at('gui','inline','horizontal','center-center')
+	            let buttons = this.buttons
+	            for(let button of buttons) button.onclick = e => this.button_action(e)
+            }
+            get back(){ return this.query('[back]') }
+            get buttons(){ return this.all('wwe-button') }
+            button_action(e){
+            	e.preventDefault()
+	            let button = e.currentTarget
+	            let name = button.getAttribute('name')
+	            this.dispatch(name)
+            }
+            get next(){ return this.query('[next]') }
+        })
+
+
+    })(document)
+</script>

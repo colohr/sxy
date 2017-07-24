@@ -1,0 +1,11 @@
+<script>
+	window.fxy.exports('type',(type)=>{
+		let site_index = type.site_index || window.url('type/index')
+		window.fetch(site_index)
+		      .then(response=>response.json())
+		      .then(index=>{
+			      type.index = index
+			      window.wwi.library(window.url('type/library'))
+		      })
+	})
+</script>

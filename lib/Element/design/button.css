@@ -1,0 +1,30 @@
+wwe-button{
+    --height:26px;
+    border:none;
+    background-color: var(--toolbar-text,whitesmoke);
+    color:var(--toolbar-button,var(--grape));
+    font-size:16px;
+    font-weight: bold;
+    margin:6px 3px 0px 3px;
+}
+
+wwe-button[name="next"],
+wwe-button[name="back"]{
+    width:30px;
+    min-width:30px;
+    height:30px;
+    overflow: hidden;
+}
+wwe-button[name="next"] [icon],
+wwe-button[name="back"] [icon]{
+    font-size:44px;
+    position: relative;
+    top: -5px;
+    text-align: center;
+}
+wwe-button[name="next"] [icon]{
+    left:6px;
+}
+wwe-button[name="back"] [icon]{
+    left:2px;
+}

@@ -1,0 +1,20 @@
+{
+  "type":{
+    "class":"@.js",
+    "file":"index.js",
+    "query_file":"io.js",
+    "resolver":"resolver",
+    "scalars":{
+      "folder":"scalars",
+      "index_file":"index.js",
+      "file":"index.graphql"
+    }
+  },
+  "schema":{
+    "folder":"Instruct",
+    "file":"index.js",
+    "query":"Out",
+    "mutation":"In",
+    "subscription":"Push"
+  }
+}

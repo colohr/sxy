@@ -1,0 +1,19 @@
+library = {}
+
+library.logic = [
+	'control/Data.es6',
+	'control/Frame.es6',
+	'control/Api.es6',
+	'control/Element.es6'
+]
+
+library.elements = [
+	'frame.html',
+	'navigator.html',
+	'toolbar.html',
+	{
+		path:'dash.html',
+		wait:['type-frame','type-navigator','type-toolbar']
+	}
+]
+
