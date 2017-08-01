@@ -1,6 +1,6 @@
 {
   "name": "sxy",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "GraphQL Proxy",
   "main": "./index.js",
   "repository": {
