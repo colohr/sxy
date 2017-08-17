@@ -1,0 +1,6 @@
+library = {}
+library.element_name = 'struct-client-library'
+library.logic = [
+	'control/library.es6',
+	'control/Actions.es6'
+]

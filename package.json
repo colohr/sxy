@@ -1,6 +1,6 @@
 {
   "name": "sxy",
-  "version": "0.0.37",
+  "version": "0.0.39",
   "description": "GraphQL Proxy",
   "main": "./index.js",
   "repository": {
@@ -16,8 +16,8 @@
   "homepage": "https://github.com/colohr/sxy#readme",
   "dependencies": {
     "basic-auth": "^1.1.0",
+    "better-console": "^1.0.0",
     "body-parser": "^1.16.1",
-    "cheerio": "^0.22.0",
     "compression": "^1.6.2",
     "es6-template-strings": "^2.0.1",
     "express": "^4.14.1",
@@ -32,10 +32,10 @@
     "mongodb": "^2.2.22",
     "node-fetch": "^1.6.3",
     "sequelize": "^3.30.4",
-    "sqlite3": "^3.1.8"
+    "sqlite3": "^3.1.8",
+    "wxy": "0.0.3"
   },
   "devDependencies": {
-    "better-console": "^1.0.0",
     "nodemon": "^1.11.0"
   }
 }
