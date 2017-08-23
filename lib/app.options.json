@@ -1,0 +1,13 @@
+{
+  "sxy":{
+    "endpoint":"/graph",
+    "path":"/api",
+    "routers":{
+      "client":"/client",
+      "index":"/index",
+      "documents":"/docs"
+    },
+    "structs":"/structs",
+    "ui":"/ui"
+  }
+}
