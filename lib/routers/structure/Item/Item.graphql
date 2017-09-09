@@ -1,0 +1,14 @@
+extend type Out{
+
+    items:[IndexItem]
+}
+
+#GraphQL index information
+type IndexItem{
+    #The struct name
+    name: Text
+    #The GraphQL endpoint of the struct
+    endpoint: Url
+    #The documentation & test site(GraphiQL) for the struct
+    ui: Url
+}

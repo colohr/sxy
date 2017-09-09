@@ -1,6 +1,0 @@
-library = {}
-library.element_name = 'struct-documents-library'
-
-library.logic = [
-	'control/schema.es6'
-]

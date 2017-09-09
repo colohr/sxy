@@ -1,0 +1,21 @@
+query Struct($type:String!){
+    __type(name:$type) {
+        name
+        fields {
+            name
+            args {
+                defaultValue
+                name
+                type{
+                    name
+                }
+            }
+            type {
+                name
+                ofType {
+                    name
+                }
+            }
+        }
+    }
+}

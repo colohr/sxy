@@ -1,0 +1,10 @@
+#The information for the site's GraphQL api
+type StructIndex{
+    #The domain or main url of the web site
+    domain: Url
+    items: [IndexItem]
+    modules: [IndexModule]
+    structure: IndexItem
+    #The url used to access all structs of the site
+    url: Url
+}

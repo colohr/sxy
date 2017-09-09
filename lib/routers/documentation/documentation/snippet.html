@@ -1,0 +1,53 @@
+<template id="documentation-snippet">
+    <style>
+        @import "/modules/wwi/component/design/host.css";
+        :host{
+            display:block;
+	        position: relative;
+
+        }
+	    [view]{
+		    margin:20px;
+	    }
+    </style>
+</template>
+<script>
+    (function(doc){
+        const DocumentationSnippet = wwi.element(doc).extension({
+	        module:'struct',
+	        name:'documentation',
+	        target:'Tool'
+        })
+        DocumentationSnippet(class extends DocumentationSnippet.Element{
+            value(data){
+	            let info = document.createElement('documentation-info')
+	            if(fxy.is.data(data.value)){
+	            	let codes = []
+		            for(let i in data.value) {
+	            		codes.push(`//${i}`)
+		            	codes.push(get_code(data.value[i]))
+		            }
+		            data.code = codes.join('\n')
+	            }
+	            else data.code = get_code(data.value)
+	            info.value = data
+	            this.view.appendChild(info)
+
+	            return this
+				//shared actions
+	            function get_code(value){
+	            	if(fxy.is.text(value)) return value
+		            else if(fxy.is.data(value)){
+			            let code = `${value.get}`
+			            if(value.set) code += `\n${value.set}`
+			            return code
+		            }
+		            else if(fxy.is.symbol(value)) return ''
+		            return value+''
+	            }
+            }
+        })
+
+
+    })(document)
+</script>

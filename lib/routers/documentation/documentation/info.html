@@ -1,0 +1,65 @@
+<template id="documentation-info">
+    <style>
+        @import "/modules/wwi/component/design/host.css";
+        :host{
+            display:block;
+	        padding:10px;
+	        background: white;
+			position: relative;
+	        height: 200px;
+        }
+
+        [view]{
+	        height: calc(100% - 20px);
+	        width: calc(100% - 20px);
+        }
+        [info]{
+	        position: relative;
+	        max-height: 100%;
+	        overflow-y: auto;
+	        max-width: 100px;
+	        padding:10px;
+        }
+	    code-editor{
+		    width: 50%;
+		    height:100%;
+		    --code-size:12px;
+		    border-radius: 7px;
+		    overflow: hidden;
+		    border:1px solid var(--silver);
+	    }
+	    [property]{
+		    font-size:12px;
+	    }
+	    hr{
+		    border-color:var(--silver);
+		    border-top:none;
+	    }
+    </style>
+	<div view gui horizontal around>
+		<div info flex-1 property>
+			<b>${name}</b>
+			<hr>
+			<i>${type}</i>
+		</div>
+		<code-editor flex-2 theme="neo"></code-editor>
+	</div>
+
+
+</template>
+<script>
+    (function(doc){
+        const DocumentationInfo = wwi.element(doc).extension({module:'behavior',name:'Bind'})
+        DocumentationInfo(class extends DocumentationInfo.Element{
+        	get code(){ return this.query('code-editor')}
+			get value(){ return this.data || null }
+			set value(value){
+				this.data=value
+				this.bind(value)
+
+				this.code.value = value.code
+				this.code.resize()
+			}
+        })
+    })(document)
+</script>

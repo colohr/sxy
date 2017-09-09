@@ -1,0 +1,28 @@
+
+#IndexModule outputs
+extend type Out{
+    #Get module information by name.
+    module(name:Text): IndexModule
+    #Get all modules in the index.
+    modules:[IndexModule]
+}
+
+#The type of modules
+enum IndexModuleType{
+    #The value will be a json object
+    data,
+    #The value will be a wwi library of web components
+    library
+}
+
+#A module
+type IndexModule{
+    #The name of the module
+    name: Text
+    #The index file of the module
+    file: Text
+    #The url location of the module
+    url: Url
+    #The type of module
+    type: IndexModuleType
+}

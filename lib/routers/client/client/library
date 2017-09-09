@@ -1,6 +1,13 @@
 library = {}
-library.element_name = 'struct-client-library'
+library.id = 'struct-library'
 library.logic = [
-	'control/library.es6',
-	'control/Actions.es6'
+	'control/load.es6',
+	'control/index.es6',
+	'control/client.es6',
+	'control/Actions.es6',
+	'control/Struct.es6'
 ]
+library.elements = [
+	'struct.html'
+]
+library.wait = ['struct-component']

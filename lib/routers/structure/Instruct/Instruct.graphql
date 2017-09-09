@@ -1,0 +1,9 @@
+
+type Out{
+    #Get the information of the GraphQL strutcs
+    index: StructIndex
+}
+
+schema {
+    query: Out
+}

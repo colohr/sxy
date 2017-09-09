@@ -1,0 +1,18 @@
+library = {}
+library.id = 'struct-documentation-library'
+library.ports = [
+	window.components.code.index_url
+]
+
+library.logic = [
+	'logic/index.es6',
+	'logic/html.es6',
+	'logic/reader.es6'
+]
+
+library.elements = [
+	'info.html',
+	{path:'snippet.html',wait:['code-library','documentation-info']}
+]
+
+library.wait = ['code-library','documentation-snippet']
