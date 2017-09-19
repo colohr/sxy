@@ -5,7 +5,6 @@
   },
   "dependencies": {
     "better-console": "^1.0.0",
-    "fxy": "^0.1.65",
     "graphql": "^0.10.1",
     "graphql-server-express": "^0.8.5",
     "graphql-tools": "^1.0.0",
@@ -13,7 +12,9 @@
     "moment-timezone": "^0.5.11",
     "mongodb": "^2.2.22",
     "node-fetch": "^1.6.3",
-    "wxy": "0.0.45"
+    "qs": "^6.5.1",
+    "wxy": "^0.0.46",
+    "fxy": "^0.1.67"
   },
   "description": "GraphQL Server + Client Tools",
   "homepage": "https://github.com/colohr/sxy#readme",
@@ -29,5 +30,5 @@
     "type": "git",
     "url": "git+https://github.com/colohr/sxy.git"
   },
-  "version": "0.0.55"
+  "version": "0.0.56"
 }
