@@ -4,6 +4,13 @@
     "file":"index.js",
     "query_file":"io.js",
     "resolver":"resolver",
+    "resolver_file":"resolver.js",
+    "web_component":{
+      "folder":"web",
+      "component":"component",
+      "components":"components",
+      "controller_file":"index.js"
+    },
     "scalars":{
       "folder":"scalars",
       "index_file":"index.js",

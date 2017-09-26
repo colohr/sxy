@@ -11,10 +11,7 @@
     "graphql-tools": "^1.0.0",
     "lodash": "^4.17.4",
     "moment-timezone": "^0.5.11",
-    "mongodb": "^2.2.22",
-    "node-fetch": "^1.6.3",
-    "qs": "^6.5.1",
-    "wxy": "^0.0.47"
+    "wxy": "^0.0.48"
   },
   "description": "GraphQL Server + Client Tools",
   "homepage": "https://github.com/colohr/sxy#readme",
@@ -23,6 +20,9 @@
   "main": "./index.js",
   "name": "sxy",
   "optionalDependencies": {
+    "mongodb": "^2.2.22",
+    "node-fetch": "^1.6.3",
+    "qs": "^6.5.1",
     "sequelize": "^3.30.4",
     "sqlite3": "^3.1.8"
   },

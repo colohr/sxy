@@ -1,7 +1,0 @@
-{
-  "client":"/client-module-path",
-  "documentation":"/documentation-module-path",
-  "index":"/index-json-path-for-struct-information",
-  "path":"/main-path-for-routers",
-  "structure":"adds a graph/ui struct endpoint to the main router path"
-}
