@@ -11,7 +11,7 @@
     "graphql-tools": "^1.0.0",
     "lodash": "^4.17.4",
     "moment-timezone": "^0.5.11",
-    "wxy": "^0.0.48"
+    "wxy": "^0.0.49"
   },
   "description": "GraphQL Server + Client Tools",
   "homepage": "https://github.com/colohr/sxy#readme",
@@ -30,5 +30,5 @@
     "type": "git",
     "url": "git+https://github.com/colohr/sxy.git"
   },
-  "version": "0.0.59"
+  "version": "0.0.601"
 }
