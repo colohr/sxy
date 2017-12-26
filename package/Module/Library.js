@@ -23,6 +23,14 @@ class Library extends Map{
 		if(fxy.is.nothing(struct)) return null
 		let tree = fxy.tree(struct.folder)
 		for(let item of tree.items) this.set(item.name,new LibraryModule(item))
+		const StructureTypes = new Proxy(struct,{
+			get(o,name){
+			
+			}
+		})
+		this.set('structure',new LibraryModule(struct,'item') )
+		this.set('schema',new LibraryModule({ get value(){return struct.get('schema') } },'value') )
+		this.set('print',new LibraryModule({  get value(){ return struct.print } },'value') )
 		this.set('struct',new LibraryModule({ get value(){ return struct.get('schema') } },true) )
 		return this
 	}
@@ -34,7 +42,9 @@ class LibraryModule{
 		this.is_structure = is_graph_structure
 	}
 	module(){
-		if(this.is_structure) return get_library_struct(this.item.value)
+		if(this.is_structure === true) return get_library_struct(this.item.value)
+		else if(this.is_structure === 'item') return this.item
+		else if(this.is_structure === 'value') return this.item.value
 		return require(this.item.get('path'))
 	}
 }

@@ -1,16 +1,15 @@
 const wxy = require('wxy')
 const folder = Symbol.for('folder')
 const AppIndex = require('./AppIndex')
-class SxyApp extends wxy.Cloud{
-	static get create(){ return create_app }
-	static get get(){ return actions() }
+class SxyCloud extends wxy.Cloud{
+	static get create(){ return create }
 	static get loader(){ return require('./loader') }
 	static get router(){ return require('./router') }
-	static get start(){ return start_app }
+	static get start(){ return start }
 	static get structs(){ return require('./structs') }
-	constructor(value){ super(value) }
+	constructor(app_options){ super(app_options) }
 	start(){
-		let loader = get_loader(this)
+		const loader = get_loader(this)
 		return new Promise((success,error)=>{
 			loader.once('done',(structs)=>{
 				this.struct_index = new AppIndex(this.options,structs.structs_index)
@@ -24,20 +23,14 @@ class SxyApp extends wxy.Cloud{
 }
 
 //exports
-module.exports = SxyApp
+module.exports = SxyCloud
 
 //shared actions
-function actions(){
-	return {
-		graphs:get_graphs
-	}
-}
+function create(value){ return new SxyCloud(value) }
 
-function create_app(value){ return new SxyApp(value) }
-
-function get_loader(app){
-	let options = app instanceof SxyApp ? app.options.sxy:app
-	options[folder] = app.folder
+function get_loader(cloud){
+	const options = cloud instanceof SxyCloud ? cloud.options.sxy:cloud
+	options[folder] = cloud.folder
 	return require('./loader')(options)
 }
 
@@ -47,11 +40,10 @@ function get_index_router(index){
 	return router
 }
 
-function start_app(value){
-	console.log('\n••••••••••sxy••••••••••••')
-	return create_app(value).start()
-}
+function start(app_options){ return create(app_options).start() }
 
+
+function actions(){ return { graphs:get_graphs } }
 
 
 

@@ -1,18 +1,30 @@
 const fxy = require('fxy')
 const index_options = Symbol('options')
 const IndexItem = require('./Item')
-
+const Preset = {
+	"endpoint":"/point",
+	"path":"/api",
+	"index":"/index",
+	"structs":"/structs",
+	"views":"/views",
+	"ui":"/ui"
+}
 class Index{
 	constructor(options,structs){
 		if(!('index' in options)) options.index = '/index.json'
 		if(options.index.includes('.json') !== true) options.index = `${options.index}.json`
+		const wwi = options.wwi
+		const sxy = options.sxy || {}
+		const site_path = options.path || ''
+		
 		this[index_options] = options
 		this.app_url = options.url
-		this.struct_client = 'wwi' in options && options.wwi.components ? fxy.source.url(this.app_url,'components','struct/index.html'):null
-		this.struct_url = fxy.source.url(this.app_url,options.sxy.path)
-		this.struct_path = fxy.join(options.path,options.sxy.path)
+		this.struct_url = fxy.source.url(this.app_url,sxy.path || Preset.path)
+		this.struct_path = fxy.join(site_path,sxy.path || Preset.path)
 		this.file = fxy.join(this.struct_path,options.index)
 		this.url = fxy.source.url(this.app_url,this.file)
+		this.struct_client = fxy.is.data(wwi) && wwi.components ? fxy.source.url(this.app_url,'components','struct/index.html'):null
+		
 		this.items = get_items(this,structs)
 	}
 	router(){ return get_router(this) }
