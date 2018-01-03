@@ -1,8 +1,8 @@
 const fxy = require('fxy')
 
 class Data{
+	static get As(){ return require('./As') }
 	static get define(){ return define_data }
-	static get Model(){ return require('./Model') }
 	static get refine(){ return refine_data }
 	static get Type(){ return require('./Type') }
 	constructor(data){

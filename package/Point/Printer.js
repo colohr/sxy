@@ -5,8 +5,10 @@ const {printType,printSchema,introspectionQuery} = require('graphql')
 
 //exports
 module.exports = setup_printer
+module.exports.schema = print_schema
 
 //shared actions
+function print_schema(name){ return get_type_value(name) }
 function setup_printer(router,names){
 	if(!fxy.is.data(names)) names = {}
 	router.get(`/${names.print || 'print'}/:api`,(request,response,next)=>{
@@ -41,21 +43,23 @@ function setup_printer(router,names){
 	
 	//return value
 	return router
-	//shared actions
-	function get_type_value(name,type){
-		let struct = sxy(`${name}/get`)
-		let value = null
-		if(struct){
-			let structure = struct('struct')
-			if(structure){
-				let schema = structure.item.value
-				let types = schema.getTypeMap()
-				if(type && type in types) value = printType(types[type])
-				else if(!type) value = printSchema(schema)
-			}
-			
-		}
-		return value
-	}
 	
+	
+}
+
+//shared actions
+function get_type_value(name,type){
+	let struct = sxy(`${name}/get`)
+	let value = null
+	if(struct){
+		let structure = struct('struct')
+		if(structure){
+			let schema = structure.item.value
+			let types = schema.getTypeMap()
+			if(type && type in types) value = printType(types[type])
+			else if(!type) value = printSchema(schema)
+		}
+		
+	}
+	return value
 }

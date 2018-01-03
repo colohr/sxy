@@ -80,7 +80,6 @@ function get_loggable(item){
 			case 'pathname':
 				data['@'] = item[name]
 				break
-		
 			case 'url':
 				break
 			default:

@@ -1,0 +1,14 @@
+#A record that is able to store more than one value
+interface Struct{
+    locator: StructLocator!
+}
+
+type StructLocator{
+    containers:[ID]
+    id: ID!
+    location: DirectoryLocation!
+    pointers:[ID]
+    record: StructRecord!
+    relations:[ID]
+    tags:[Text]
+}

@@ -23,8 +23,9 @@ const sxy = new Proxy(Module,{
 		if(name in o) return o[name]
 		else if(name === 'cloud') return Cloud.create
 		else if(name === 'print') return require('./Print')
-		else if(name === 'template') return require('./Structure').template
+		else if(name === 'template') return require('./Structure').Template
 		else if(name === 'instruct') return require('./Structure/instruct')
+		else if(name === 'get') return require('./Utility/get')
 		return get_value(Items,name)
 	},
 	has(o,name){

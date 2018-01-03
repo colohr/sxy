@@ -1,69 +1,26 @@
-
-#A single, uppercase, alphabetical character.
-enum ABC{
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z
-}
-
-#A data value
 scalar Data
 
-#A date value
 scalar Date
 
-#A DATETIME value for sql dbs
+scalar DateDay
+
+scalar DateMonth
+
 scalar DateTime
 
-#A decimal number with the js value of a Float
+scalar DateYear
+
 scalar Decimal
 
-#A long string of html with unlimited storage with sqlite dbs
-scalar HTML
-
-#A whole number with the js value of Integer
 scalar Number
 
-#A long string of text with unlimited storage with sqlite dbs
-scalar Paragraph
-
-#Human readable text value
 scalar Text
 
-#A human readable text value with capitalized words and spaces
-scalar Title
-
-#Time in - 4:30pm - HH:MI:SS(sql)
 scalar Time
 
-#A Timestamp value for js value of Date.now() & NOW value for sql dbs
 scalar Timestamp
 
-#A true or false value
 scalar TF
 
-#A url for a web site or service
 scalar Url
+

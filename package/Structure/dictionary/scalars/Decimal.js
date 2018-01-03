@@ -20,9 +20,3 @@ module.exports = new GraphQLScalarType({
 function to_float(value){
 	return fxy.as.number(value)
 }
-
-//function decimal(value){
-	//return fxy.as.float(value)
-	//let underscored = fxy.id._(text)
-	//return underscored.split('_').map(word=>fxy.id.capitalize(word)).join(' ')
-//}

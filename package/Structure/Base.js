@@ -7,7 +7,6 @@ class StructureBase extends Map{
 	static basename(graph){ return graph.get(basename) }
 	static folder(graph){ return graph.get(folder) }
 	static identity(graph){ return this.basename(graph).trim() }
-	//static source(graph){ return source(graph) }
 	static url(graph){ return graph.get(endpoint_url) }
 	constructor(...x){
 		super([
@@ -24,6 +23,3 @@ class StructureBase extends Map{
 
 //exports
 module.exports = StructureBase
-
-//const graph = require('./index')
-//const source = require('./source')

@@ -12,9 +12,14 @@ module.exports.folder = get_type_folder
 function get_folder(folder){ return folder.replace(fxy.basename(folder),'') }
 
 function get_schema(folder){
-	if(!folder) folder = fxy.join(__dirname,'../../../')
-	const struct = sxy(`${folder}/get`)
-	try{ return struct('struct').item.value.getTypeMap() }
+	if(!folder) {
+		if(!__dirname.includes('node_modules')) folder = process.cwd()
+		else folder = fxy.join(__dirname,'../../../')
+	}
+	try{
+		const struct = sxy(`${folder}/get`)
+		return struct('struct').item.value.getTypeMap()
+	}
 	catch(e){ console.error(e) }
 	return null
 }

@@ -13,7 +13,7 @@ class Module{
 }
 
 //exports
-module.exports = (...x)=>{ return new Module(...x) }
+module.exports = (...x)=>new Module(...x)
 
 //shared actions
 function get_module_value(path,type){

@@ -1,4 +1,3 @@
-
 const DateType = require('../Date')
 
 const Date = new DateType({

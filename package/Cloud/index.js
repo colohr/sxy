@@ -1,6 +1,7 @@
 const wxy = require('wxy')
 const folder = Symbol.for('folder')
 const AppIndex = require('./AppIndex')
+
 class SxyCloud extends wxy.Cloud{
 	static get create(){ return create }
 	static get loader(){ return require('./loader') }

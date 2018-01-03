@@ -2,7 +2,6 @@ const { GraphQLScalarType } = require('graphql')
 const fxy = require('fxy')
 const moment = require('moment-timezone')
 const default_timezone = "America/Chicago"
-moment.tz.setDefault(moment.tz.guess())
 
 class DateType{
 	constructor({ description, formats, kind, name, structure, timezone }){

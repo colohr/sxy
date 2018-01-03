@@ -3,6 +3,10 @@
     "class":"@.js",
     "file":"index.js",
     "query_file":"io.js",
+    "instruct":{
+      "file":"io.js",
+      "is":"is"
+    },
     "resolver":"resolver",
     "resolver_file":"resolver.js",
     "web_component":{
@@ -22,6 +26,9 @@
     "file":"index.js",
     "query":"Out",
     "mutation":"In",
-    "subscription":"Push"
+    "subscription":"Links"
+  },
+  "signal":{
+    "file":"signal.graphql"
   }
 }

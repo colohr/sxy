@@ -1,0 +1,28 @@
+#Relative path to a file or folder in an operating system's directory
+scalar DirectoryLocation
+
+interface DirectoryItem{
+    location: DirectoryLocation!
+    name: Text!
+    type: DirectoryLocatorType!
+}
+
+type DirectoryLocator implements DirectoryItem, UniformResourceLocator{
+    location: DirectoryLocation!
+    name: Text!
+    type: DirectoryLocatorType!
+    url: Url
+}
+
+enum DirectoryItemType{
+    #Structured data
+    data
+    #A container for a collection, list, table or set of structured data
+    dataset
+    #A system to access & store structured data sets
+    database
+    #Document
+    file
+    #A container of directory items
+    folder
+}

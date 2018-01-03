@@ -1,6 +1,6 @@
 const express = require('express')
 const body_parser = require('body-parser')
-const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 
 //exports
 module.exports = get_router
@@ -9,7 +9,7 @@ module.exports = get_router
 function get_router(struct,options){
 	const data = get_data(struct,options)
 	const router = express.Router()
-	const graph = get_graph(struct,data)
+	const graph = get_graph(struct,data,options)
 	router.use(data.endpoint.path, body_parser.json(), graph)
 	router.use(data.ui.path, graphiqlExpress(data.ui.options))
 	return router
@@ -26,6 +26,7 @@ function get_data(struct,options){
 			path: '/ui'
 		}
 	}
+	//if(struct.link) data.ui.options.subscriptionsEndpoint = struct.link.endpoint
 	if(options){
 		if(options.endpoint) data.endpoint.path = options.endpoint
 		if(options.ui) data.ui.path = options.ui
