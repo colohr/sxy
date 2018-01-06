@@ -15,7 +15,7 @@
     "luxon": "^0.2.11",
     "moment-timezone": "^0.5.11",
     "subscriptions-transport-ws": "^0.9.4",
-    "wxy": "^0.0.502"
+    "wxy": "^0.0.503"
   },
   "description": "API Toolbox using GraphQL: includes express server, loading of multiple endpoints, schema sharing & more.",
   "homepage": "https://github.com/colohr/sxy#readme",
@@ -27,5 +27,5 @@
     "type": "git",
     "url": "git+https://github.com/colohr/sxy.git"
   },
-  "version": "0.0.71"
+  "version": "0.0.72"
 }
