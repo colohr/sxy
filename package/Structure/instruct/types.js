@@ -9,13 +9,46 @@ function types_export(information){
 	const types = get_types(folder)
 	Object.defineProperty(information,'schema', {
 		get(){
-			return set_shared(this,{
+			return set_shared(this,set_options({
 				typeDefs:types.map(type=>type.schema),
 				resolvers:get_resolvers( types, folder )
-			})
+			}))
 		}
 	})
 	return information
+	//shared actions
+	
+	function set_options(data){
+		const options = get_rules()
+		const logger = get_logger()
+		if(logger) options.logger = logger
+		
+		return Object.assign(data,options)
+		//shared actions
+		function get_logger(){
+			//logger is an optional argument, which can be used to print errors to the server console that are usually swallowed by GraphQL. The logger argument should be an object with a log function, eg. const logger = { log: (e) => console.log(e) }
+			if('logger' in information){
+				if(information.logger === false) return null
+				return information.logger
+			}
+			return { log: (e) => console.log(e) }
+		}
+		function get_rules(){
+			return {
+				//allowUndefinedInResolve is an optional argument, which is true by default. When set to false, causes your resolve functions to throw errors if they return undefined, which can help make debugging easier.
+				allowUndefinedInResolve:true,
+				//resolverValidationOptions is an optional argument which accepts an object of the following shape: { requireResolversForArgs, requireResolversForNonScalar }.
+				resolverValidationOptions:{
+					//requireResolversForArgs will cause makeExecutableSchema to throw an error if no resolve function is defined for a field that has arguments.
+					requireResolversForArgs:true,
+					//requireResolversForNonScalar will cause makeExecutableSchema to throw an error if a non-scalar field has no resolver defined. By default, both of these are true, which can help catch errors faster. To get the normal behavior of GraphQL, set both of them to false.
+					requireResolversForNonScalar:false
+				},
+				//allowResolversNotInSchema turns off the functionality which throws errors when resolvers are found which are not present in the schema. Defaults to false, to help catch common errors.
+				allowResolversNotInSchema:false
+			}
+		}
+	}
 }
 
 function set_shared(information,types){

@@ -26,7 +26,7 @@ function get_data(struct,options){
 			path: '/ui'
 		}
 	}
-	//if(struct.link) data.ui.options.subscriptionsEndpoint = struct.link.endpoint
+	
 	if(options){
 		if(options.endpoint) data.endpoint.path = options.endpoint
 		if(options.ui) data.ui.path = options.ui
@@ -41,6 +41,7 @@ function get_graph(struct){
 		if('root' in struct) graph.rootValue = struct.root(...x)
 		return graph
 	})
+	
 }
 
 function get_ui_options(){
