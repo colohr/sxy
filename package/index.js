@@ -9,14 +9,14 @@ const Items = [
 	'Structure'
 ]
 
-const app = new Proxy(Cloud.start,{
-	get(o,name){
-		if(name in Cloud) return Cloud[name]
-		if(name in o) return o[name]
-		return null
-	},
-	has(o,name){ return name in Cloud || name in o }
-})
+//const app = new Proxy(Cloud.start,{
+//	get(o,name){
+//		if(name in Cloud) return Cloud[name]
+//		if(name in o) return o[name]
+//		return null
+//	},
+//	has(o,name){ return name in Cloud || name in o }
+//})
 
 const sxy = new Proxy(Module,{
 	get(o,name){
@@ -36,7 +36,7 @@ const sxy = new Proxy(Module,{
 
 //exports
 module.exports = sxy
-module.exports.app = app
+//module.exports.app = app
 
 
 //shared actions

@@ -42,10 +42,3 @@ function get_index_router(index){
 }
 
 function start(app_options){ return create(app_options).start() }
-
-
-function actions(){ return { graphs:get_graphs } }
-
-
-
-
