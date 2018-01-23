@@ -10,9 +10,8 @@ function get_schema(structure,options){
 	const types = options.types
 	let schema =  types.schema
 	if(!options.no_scalars) schema = dictionary.scalars.combine(schema)
-	schema = get_schema_instructor(schema)
 	structure.set('types',types)
-	return options.extend ? options.extend(get_schema_extender(structure,schema)):makeExecutableSchema(schema)
+	return options.extend ? options.extend(get_schema_extender(structure,schema)):makeExecutableSchema(get_schema_instructor(schema))
 	
 }
 
@@ -25,10 +24,10 @@ function get_schema_instructor(schema){
 	for(const definition of definitions){
 		if(fxy.is.text(definition)){
 			const value = definition.trim()
-			if(value.indexOf('schema') === 0) has_schema = true
-			else if(value.indexOf('type Out{') === 0 || value.indexOf('type Out {') === 0) has_out = true
-			else if(value.indexOf('type In{') === 0 || value.indexOf('type In {') === 0) has_in = has_ins = true
-			else if(value.indexOf('extend type In{') === 0 || value.indexOf('extend type In {') === 0) has_ins = true
+			if(value.indexOf('schema') >= 0) has_schema = true
+			if(value.indexOf('type Out{') >= 0 || value.indexOf('type Out {') >= 0) has_out = true
+			if(value.indexOf('type In{') >= 0 || value.indexOf('type In {') >= 0) has_in = has_ins = true
+			if(value.indexOf('extend type In{') >= 0 || value.indexOf('extend type In {') >= 0) has_ins = true
 		}
 	}
 	if(!has_out) definitions.push(`type Out{ StructOutput: ID  }`)
