@@ -12,6 +12,6 @@ function get_structure(struct_options){
 		data_types:struct_options.data_types,
 		folder:struct_options.folder,
 		shared:struct_options.shared
-	})
+	}, struct_options)
 	return new StructureLoader(struct_options)
 }

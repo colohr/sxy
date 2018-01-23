@@ -19,6 +19,10 @@
       "folder":"scalars",
       "index_file":"index.js",
       "file":"index.graphql"
+    },
+    "directives":{
+      "folder":"directives",
+      "index_file":"index.js"
     }
   },
   "schema":{

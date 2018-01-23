@@ -1,7 +1,6 @@
-const { makeExecutableSchema } = require('graphql-tools')
 const Print = require('../Print')
 const fxy = require('fxy')
-const dictionary = require('./dictionary')
+const extender = require('./extender')
 const StructureBase = require('./Base')
 
 class StructureLoader extends StructureBase{
@@ -36,12 +35,6 @@ function get_printer(structure){
 	})
 }
 
-function get_schema(types,no_scalars){
-	let schema = types.schema
-	if(!no_scalars) schema = dictionary.scalars.combine(schema)
-	return makeExecutableSchema(schema)
-}
-
 function get_types(structure){
 	const instruct = require('./instruct')(structure.info)
 	const folder = structure.folder
@@ -54,14 +47,12 @@ function get_types(structure){
 }
 
 function load_structure(structure,options){
-	const {types,no_scalars} = options
-	try{ structure.set('schema', get_schema(types,no_scalars)) }
+	try{ structure.set('schema', extender(structure,options)) }
 	catch(e){
 		const log = require('better-console')
 		log.error(`Struct: "${structure.name}"`)
 		log.error(e)
 	}
-	structure.set('types',types)
 	return set_structure(structure,options)
 }
 

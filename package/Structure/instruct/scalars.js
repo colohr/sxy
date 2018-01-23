@@ -13,12 +13,6 @@ function get_files(path){
 	return new Set(files)
 }
 
-function get_schema(folder){
-	let file = fxy.join(folder,info.scalars.folder,info.scalars.file)
-	if(fxy.exists(file)) return fxy.readFileSync(file, 'utf8')
-	return ''
-}
-
 function get_resolvers(folder){
 	let scalar_path = fxy.join(folder,info.scalars.folder)
 	let resolvers = []
@@ -33,3 +27,10 @@ function get_resolvers(folder){
 	}
 	return resolvers
 }
+
+function get_schema(folder){
+	let file = fxy.join(folder,info.scalars.folder,info.scalars.file)
+	if(fxy.exists(file)) return fxy.readFileSync(file, 'utf8')
+	return ''
+}
+

@@ -1,5 +1,6 @@
 const Instruct = {
 	get info(){ return require('./info') },
+	get directives(){ return require('./directives') },
 	get models(){ return require('./models') },
 	template(){ return require('./information.json') },
 	get type(){ return require('./type') },

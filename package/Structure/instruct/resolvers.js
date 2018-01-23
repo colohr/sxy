@@ -21,6 +21,7 @@ function get_instruct(folder){
 		return fxy.list(folder).folders
 		          .filter(name=>name !== '.DS_Store')
 		          .filter(name=>name !== info.folder)
+		          .sort()
 		          .map(name=>fxy.join(folder,name))
 	}
 	
@@ -30,27 +31,6 @@ function get_instruct(folder){
 		return get_instruct_file(query_file)
 	}
 }
-
-function get_queries(folder){
-	//return value
-	return paths().map(typepath=>queries(typepath))
-	
-	//shared actions
-	function paths(){
-		let info = Info.schema
-		return fxy.list(folder).folders
-		          .filter(name=>name !== '.DS_Store')
-		          .filter(name=>name !== info.folder)
-		          .map(name=>fxy.join(folder,name))
-	}
-	
-	function queries(typepath) {
-		let info = Info.type
-		let query_file = fxy.join(typepath, info.query_file)
-		return get_instruct_file(query_file)
-	}
-}
-
 
 function get_instruct_file(file){
 	let out = {}
@@ -67,9 +47,7 @@ function get_instruct_file(file){
 	return { out, is:is_types }
 }
 
-function has_multiple_values(query,info){
-	return values.filter(value=>info[value] in query).length > 0
-}
+function has_multiple_values(query,info){ return values.filter(value=>info[value] in query).length > 0 }
 
 function resolvers_export( resolvers, folder){
 	
