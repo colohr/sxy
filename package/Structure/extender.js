@@ -39,9 +39,9 @@ function get_schema_instructor(schema){
 
 function get_schema_extender(structure,schema){
 	return {
-		get graphql(){ return require('graphql') },
-		make(...x){ return makeExecutableSchema( ...(x.length ?  x:[this.schema]) ) },
 		build(...x){ return this.graphql.buildSchema(...x) },
+		get graphql(){ return require('graphql') },
+		instruct(){ return get_schema_instructor(this.schema) },
 		join(...x){
 			const items = get_schemas(...x)
 			for(const item of items.values()){
@@ -50,11 +50,12 @@ function get_schema_extender(structure,schema){
 			}
 			return this
 		},
+		make(...x){ return makeExecutableSchema( ...(x.length ?  x:[this.schema]) ) },
 		schema,
 		get schemas(){ return get_schemas },
 		structure,
-		get types(){ return this.structure.get('types') },
-		get tools(){ return require('graphql-tools') }
+		get tools(){ return require('graphql-tools') },
+		get types(){ return this.structure.get('types') }
 	}
 	//shared actions
 	function get_schemas(...structs){
@@ -97,8 +98,9 @@ function get_schema_extender(structure,schema){
 				data.resolvers = get_schema_resolvers
 				data.schema = get_schema_content
 				schemas.set(data.name,data)
+				return data
 			}
-			return data
+			return null
 		}
 		function get_schema_content(list){
 			const content = []
