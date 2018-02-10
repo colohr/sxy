@@ -13,9 +13,9 @@ module.exports = get_type
 //shared actions
 function set_data(type,data){
 	if(fxy.is.data(data)){
-		let is_underscored = type.constructor.is_underscored
-		for(let i in data){
-			let name = i !== '_id' && is_underscored ? fxy.id._(i):i
+		const is_underscored = type.constructor.is_underscored
+		for(const i in data){
+			const name = i.indexOf('_') !== 0 && is_underscored ? fxy.id._(i):i
 			type.set(name,data[i])
 		}
 	}

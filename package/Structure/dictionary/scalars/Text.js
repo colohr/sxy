@@ -1,6 +1,7 @@
 const { GraphQLScalarType } = require('graphql')
 const fxy = require('fxy')
 
+//exports
 module.exports = new GraphQLScalarType({
 	description: 'Human readable text',
 	name: 'Text',
@@ -10,6 +11,3 @@ module.exports = new GraphQLScalarType({
 	parseLiteral(ast) { return fxy.as.text(ast.value) },
 	serialize(value) { return fxy.as.text(value) }
 })
-
-
-

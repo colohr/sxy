@@ -1,6 +1,7 @@
 const { GraphQLScalarType } = require('graphql')
 const fxy = require('fxy')
 
+//exports
 module.exports = new GraphQLScalarType({
 	description: 'A whole number',
 	name: 'Number',

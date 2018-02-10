@@ -27,7 +27,6 @@ class DateType{
 	get is(){ return fxy.is }
 	get moment(){ return moment }
 	parseValue(value) {
-
 		if('pre' in this) value = this.pre(value,this)
 		if(fxy.is.nothing(value)) return null
 		let m = moment(value).tz(this.timezone).format(this.formats[1])
@@ -35,6 +34,7 @@ class DateType{
 		return m
 	}
 	parseLiteral({value}) {
+		
 		if('pre' in this) value = this.pre(value,this)
 		if(fxy.is.nothing(value)) return null
 		let m = moment(value).tz(this.timezone).format(this.formats[1])
@@ -45,6 +45,7 @@ class DateType{
 		if('pre' in this) value = this.pre(value,this)
 		if(fxy.is.nothing(value)) return null
 		let m = moment(value).tz(this.timezone).format(this.formats[1])
+		
 		if('parse' in this) return this.parse(m,value,this)
 		return m
 	}

@@ -1,22 +1,22 @@
 const { GraphQLScalarType, Kind } = require('graphql')
 const fxy = require('fxy')
 
+//exports
 module.exports = new GraphQLScalarType({
 	description: 'A decimal number',
-	name: 'Decimal',
-	structure: 'DECIMAL',
 	kind: 'FLOAT',
-	parseValue(value) { return to_float(value) },
-	parseLiteral(ast) {
-		if(ast.kind === Kind.STRING) return to_float(ast.value)
-		else if(ast.kind === Kind.FLOAT) return ast.value
-		else if(ast.kind === Kind.INT) return to_float(ast.value)
-		return null
-	},
-	serialize(value) { return to_float(value) }
+	name: 'Decimal',
+	parseLiteral(ast){ return parse(ast) },
+	parseValue(value){ return to_float(value) },
+	serialize(value){ return to_float(value) },
+	structure: 'DECIMAL'
 })
 
-
-function to_float(value){
-	return fxy.as.number(value)
+//shared actions
+function parse(ast){
+	if(ast.kind === Kind.STRING) return to_float(ast.value)
+	else if(ast.kind === Kind.FLOAT) return ast.value
+	else if(ast.kind === Kind.INT) return to_float(ast.value)
+	return null
 }
+function to_float(value){ return fxy.as.number(value) }

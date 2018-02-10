@@ -9,7 +9,9 @@ class SxyCloud extends wxy.Cloud{
 	static get start(){ return start }
 	static get structs(){ return require('./structs') }
 	constructor(app_options){ super(app_options) }
+	get link(){ return require('../Point/Link').cloud(this) }
 	start(){
+		if(this.options.sxy.links) require('../Point/Link').cloud(this,false)
 		const loader = get_loader(this)
 		return new Promise((success,error)=>{
 			loader.once('done',(structs)=>{

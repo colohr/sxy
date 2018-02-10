@@ -9,7 +9,6 @@ class StructureLoader extends StructureBase{
 		if(options.library) register_library(this,options.library)
 		this.loaded = load_structure(this,options)
 	}
-	get link(){ return get_link(this) }
 	get point(){ return get_point(this) }
 	get print(){ return get_printer(this) }
 	get types(){ return get_types(this) }
@@ -21,8 +20,6 @@ class StructureLoader extends StructureBase{
 module.exports = StructureLoader
 
 //shared actions
-function get_link(struct,...x){ return require('./Link').get(struct,...x) }
-
 function get_point(struct,...x){ return require('./Point').get(struct,...x) }
 
 function get_printer(structure){
@@ -69,9 +66,6 @@ function set_structure(structure,options){
 			else structure[name] = value
 		}
 		else switch(name){
-			case 'link':
-				get_link(structure,value)
-				break
 			case 'point':
 				get_point(structure,value)
 				break

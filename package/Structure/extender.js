@@ -11,7 +11,7 @@ function get_schema(structure,options){
 	let schema =  types.schema
 	if(!options.no_scalars) schema = dictionary.scalars.combine(schema)
 	structure.set('types',types)
-	return options.extend ? options.extend(get_schema_extender(structure,schema)):makeExecutableSchema(get_schema_instructor(schema))
+	return options.extend ? options.extend(get_schema_extender(structure,schema)):makeExecutableSchema(schema)
 	
 }
 

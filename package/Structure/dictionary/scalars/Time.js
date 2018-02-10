@@ -1,21 +1,16 @@
-const DateType = require('../Date')
+const Struct = require('../../../Struct')
+const date = require('../../../Struct/Date')
 
-const Time = new DateType({
-	formats:['HH:mm:SS','h:mma'],
-	name:'Time',
-	structure:'TIME'
+module.exports = Struct.scalar('Time','any-Time - Example: 9:29am',{
+	get:get_value,
+	literal:get_value,
+	value:get_value
 })
-Time.pre = function(v){
-	if(this.is.text(v)){
-		if(v.includes(':')){
-			if(v.includes(' ')) return v
-			else return this.moment(v,this.formats[0])
-		}
-	}
-	return v
-}
 
-//exports
-module.exports = Time.graph_type
+//shared actions
+function get_value(value){
+	const date_time = date(value).moment
+	return date_time.format('h:mma')
+}
 
 
