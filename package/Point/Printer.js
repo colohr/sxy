@@ -1,7 +1,7 @@
-const sxy = require('../Module')
-const fxy = require('fxy')
-const Type = require('./Type')
 const {printType,printSchema,introspectionQuery} = require('graphql')
+const fxy = require('fxy')
+const sxy = require('../Module')
+const get_input = require('./input')
 
 //exports
 module.exports = setup_printer
@@ -31,20 +31,13 @@ function setup_printer(router,names){
 		else response.send(`${type} not found in ${name}`)
 	})
 	router.get(`/${names.prints || 'prints'}/:api/:types`,(request,response)=>{
-		let value = Type.input(request.params)
+		let value = get_input(request.params)
 		console.log(value)
 		return response.send(value.text('<hr>'))
 	})
-	router.get(`/${names.prototype || 'prototype'}/:api/:types`,(request,response)=>{
-		let value = Type.input(request.params)
-		let Prototype = Type.Prototype(value)
-		return response.send(Prototype.script())
-	})
-	
+
 	//return value
 	return router
-	
-	
 }
 
 //shared actions
@@ -62,4 +55,12 @@ function get_type_value(name,type){
 		
 	}
 	return value
+}
+
+function set_prototype_types(router){
+	router.get(`/${names.prototype || 'prototype'}/:api/:types`,(request,response)=>{
+		let value = get_input(request.params)
+		let Prototype = Type.Prototype(value)
+		return response.send(Prototype.script())
+	})
 }

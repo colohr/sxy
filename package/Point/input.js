@@ -1,4 +1,4 @@
-const sxy = require('sxy')
+const sxy = require('../Module')
 const fxy = require('fxy')
 const {printType} = require('graphql')
 

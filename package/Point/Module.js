@@ -1,10 +1,10 @@
 const fxy = require('fxy')
-const Point = require('./Item')
+const Item = require('./Item')
 
 //exports
 module.exports = function PointModule(item,...x){
 	const location = shared_point_file_location(item)
-	return Point(location,...x)
+	return Item(location,...x)
 }
 
 //shared actions

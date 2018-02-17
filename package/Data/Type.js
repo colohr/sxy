@@ -1,9 +1,14 @@
 const fxy = require('fxy')
+const {is,id} = fxy
+const {content} = require('../Utility')
+const StructStore = require('./Store')
 
 class Type extends Map{
-	constructor(data){
+	static structstore(type,value){ return StructStore(type,value) }
+	constructor(data,structstore){
 		super()
 		set_data(this,data)
+		set_store(this,structstore)
 	}
 }
 
@@ -11,51 +16,30 @@ class Type extends Map{
 module.exports = get_type
 
 //shared actions
+function get_field(field,keep_intact){
+	if(keep_intact) return field
+	return field.indexOf('_') !== 0 ? id.underscore(field):field
+}
+
+function get_type(text, setting){
+	const get_type = content.type(text)
+	const type = get_type(Type)
+	const set_setting = is.data(setting) && (setting.keep_fields_intact || setting.no_storage)
+	if(set_setting) type.structure_type_setting = setting
+	return type
+}
+
 function set_data(type,data){
-	if(fxy.is.data(data)){
-		const is_underscored = type.constructor.is_underscored
-		for(const i in data){
-			const name = i.indexOf('_') !== 0 && is_underscored ? fxy.id._(i):i
-			type.set(name,data[i])
-		}
+	if(is.data(data)){
+		const keep_intact = is.data(type.structure_type_setting) && type.structure_type_setting.keep_fields_intact
+		for(const i in data) type.set(get_field(i,keep_intact), data[i])
 	}
 }
 
-function get_type(map,underscored=true){
-	let lines = get_lines(map)
-	let prototype = []
-	for(let item of lines){
-		let name = get_name(item)
-		prototype.push(`
-			get ${name}(){ return this.get('${name}') }
-			set ${name}(value){ return this.set('${name}',value) }
-		`)
+function set_store(type,structstore){
+	if(structstore){
+		if(type.constructor.structure_type_setting && type.constructor.structure_type_setting.no_storage) return
+		StructStore(type,structstore)
 	}
-	try{
-		return eval(`((Type,underscored)=>{
-			return class extends Type{
-				static get is_underscored(){ return underscored }
-				${prototype.join('')}
-			}
-		})`)(Type,underscored)
-	}catch(e){
-		console.error(`Point.Type.get_type`)
-		console.error(e)
-	}
-	
 }
 
-function get_lines(map){
-	return map.split('\n')
-	          .map(line=>line.trim())
-	          .filter(filter_comments)
-	          .filter(line=>line.length)
-	
-}
-function filter_comments(line){
-	return line.indexOf('#') !== 0 && line.indexOf(`"""`) !== 0
-}
-
-function get_name(item){
-	return item.split(':')[0].trim()
-}
