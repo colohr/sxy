@@ -18,6 +18,10 @@ function get_definitions(definitions,shared_schema){
 	                    .filter(filter_definition)
 }
 
+function get_directives(directives,shared_schema){
+	return combine(directives, shared_schema.schemaDirectives)
+}
+
 function set_resolvers(resolvers,shared_schema){
 	const shared = shared_schema.resolvers
 	for(const name in shared){
@@ -39,6 +43,7 @@ function set_shared(information,types){
 		for(const shared_schema of shared_schemas){
 			types.resolvers = set_resolvers(types.resolvers, shared_schema)
 			types.typeDefs = types.typeDefs.concat(get_definitions(types.typeDefs,shared_schema))
+			types.schemaDirectives = get_directives(types.schemaDirectives,shared_schema)
 		}
 	}
 	return types

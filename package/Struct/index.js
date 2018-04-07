@@ -1,4 +1,5 @@
 const Struct = {
+	get directive(){ return require('./directive') },
 	get enum(){ return require('./enum') },
 	get scalar(){ return require('./scalar') },
 	get shared(){ return require('../Utility').folder.shared },

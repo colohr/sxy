@@ -38,7 +38,7 @@ function get_typename(filename){
 }
 
 function get_typetext(type){
-	try{ return content.type(require('graphql').printType(type)) }
+	try{ return require('graphql').printType(type) }
 	catch(e){ console.error(e) }
 	return ''
 }

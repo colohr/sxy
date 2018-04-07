@@ -2,12 +2,19 @@ const Print = require('../Print')
 const fxy = require('fxy')
 const extender = require('./extender')
 const StructureBase = require('./Base')
-
+const clear_items = Symbol('clear items context value')
 class StructureLoader extends StructureBase{
-	constructor(options){
+	constructor(options,preload=true){
 		super(options.types.folder,options.url)
 		if(options.library) register_library(this,options.library)
-		this.loaded = load_structure(this,options)
+		if(preload === true) this.loaded = load_structure(this,options)
+	}
+	get field(){
+		return {
+			get add(){ return add_clear_item_to_context },
+			get notation(){ return get_field_notation },
+			get data(){ return clear_fields_from_result_data }
+		}
 	}
 	get point(){ return get_point(this) }
 	get print(){ return get_printer(this) }
@@ -18,8 +25,34 @@ class StructureLoader extends StructureBase{
 
 //exports
 module.exports = StructureLoader
+module.exports.build = async function build_structure(options){
+	const structure = new StructureLoader(options,false)
+	structure.loaded = await load_structure(structure, options)
+	return structure
+}
 
 //shared actions
+function add_clear_item_to_context(context,info){
+	const notation = get_field_notation(info.path)
+	if(!(clear_items in context)) context[clear_items] = new Set()
+	return (context[clear_items].add(notation),null)
+}
+
+function clear_fields_from_result_data(result,{context}){
+	if(fxy.is.object(context) && clear_items in context && fxy.is.object(result.data)){
+		for(const notation of context[clear_items]) fxy.dot.delete(result.data,notation)
+	}
+	return result
+}
+
+function get_field_notation(item, notation = []){
+	if(fxy.is.data(item)){
+		if(item.key) notation.unshift(item.key)
+		if(fxy.is.data(item.prev)) return get_field_notation(item.prev, notation)
+	}
+	return notation.join('.')
+}
+
 function get_point(struct,...x){ return require('./Point').get(struct,...x) }
 
 function get_printer(structure){
@@ -43,8 +76,8 @@ function get_types(structure){
 	})
 }
 
-function load_structure(structure,options){
-	try{ structure.set('schema', extender(structure,options)) }
+async function load_structure(structure,options){
+	try{ structure.set('schema', await extender(structure,options)) }
 	catch(e){
 		const log = require('better-console')
 		log.error(`Struct: "${structure.name}"`)

@@ -7,7 +7,9 @@ const web_component = require('./web-component')
 //exports
 module.exports = function type_export(name,folder){
 	return {
+		folder,
 		get resolvers(){ return get_resolvers(folder) },
+		get directives(){ return directives(folder) },
 		get schema(){ return get_schema(name,folder) },
 		get type(){ return get_type(folder) },
 		get web_component(){ return web_component(name,folder) }
@@ -27,7 +29,7 @@ function get_resolvers(folder){
 	let file = fxy.join(folder,`${info.resolver_file}`)
 	let resolver = {}
 	if(fxy.exists(file)) resolver = require(file)
-	let resolvers = [resolver].concat(scalars.resolvers(folder)).concat(directives(folder))
+	let resolvers = [resolver].concat(scalars.resolvers(folder))
 	return fxy.as.one(...resolvers)
 }
 

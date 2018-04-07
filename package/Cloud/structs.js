@@ -10,11 +10,11 @@ function get_structs(directory){
 	          .items
 	          .filter(item=>item.get('path').includes('.DS_Store') !== true)
 	          .map(item=>{
-                  item.graph = function(struct,loader){
+                  item.graph = async function(struct,loader){
 	                 if(fxy.is.nothing(loader)) return load(this,struct)
 	                  let instructor = get_instructor(this)
 	                  if(instructor.loaded || !instructor.ready) return loader.next()
-	                  return loader.add(load(this,struct))
+	                  return loader.add(await load(this,struct))
                   }
                   return item
               })

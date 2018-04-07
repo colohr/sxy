@@ -11,7 +11,7 @@ class GraphLoader extends EventEmitter{
 		this.graphs = new Map()
 		this.current = 0
 	}
-	add(graph){
+	async add(graph){
 		let struct = {}
 		let pathname = fxy.join(this.path,graph.path)
 		struct.path = graph.path
@@ -21,9 +21,9 @@ class GraphLoader extends EventEmitter{
 		struct.actions = get_actions(graph)
 		this.graphs.set(graph.name,struct)
 		this.current = 0
-		return this.next()
+		return await this.next()
 	}
-	done(){
+	async done(){
 		if(this.finished) return true
 		const app = require('express')()
 		const router = require('./router')
@@ -40,12 +40,12 @@ class GraphLoader extends EventEmitter{
 		return this.finished = true
 	}
 	load(){ return this.next() }
-	next(){
-		if(this.graphs.size === this.structs.length) return this.done()
+	async next(){
+		if(this.graphs.size === this.structs.length) return await this.done()
 		let items = this.waiting
 		let index = this.current >= items.length ? this.current=0:this.current
 		this.current++
-		return items[index].graph(this.options,this)
+		return await items[index].graph(this.options,this)
 	}
 	get waiting(){ return this.structs.filter(item=>!this.graphs.has(fxy.basename(item.name).trim())) }
 }

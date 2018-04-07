@@ -23,6 +23,15 @@ function assign_definitions(information,set_definitions){
 	return schema.typeDefs
 }
 
+function assign_directives(information,set_directives){
+	let schema = null
+	if(!Schemas.has(information.folder)) schema = assign_schema(information)
+	else schema = Schemas.get(information.folder)
+	if(!('schemaDirectives' in schema)) schema.schemaDirectives = Schemas.directives( Schemas.types(information.folder), information.folder )
+	if(set_directives) schema.schemaDirectives = set_directives
+	return schema.schemaDirectives
+}
+
 function assign_resolvers(information,set_resolvers){
 	let schema = null
 	if(!Schemas.has(information.folder)) schema = assign_schema(information)
@@ -44,7 +53,8 @@ function types_export(information,structure_options){
 	}
 	Object.defineProperty(information,'schema', {
 		get(){
-			return assign(shared(information, schema),options)
+			const directives = assign_directives(information,Schemas.directives( Schemas.types(information.folder), information.folder ))
+			return assign(shared(information, schema),options,{schemaDirectives:directives})
 			//get typeDefs(){ return types.map(type=>type.schema) },
 			//get resolvers(){ return get_resolvers( types, folder ) }
 			//set_options()

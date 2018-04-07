@@ -6,6 +6,7 @@ const Schemas = {
 		if(schemas_data in this) return this[schemas_data]
 		return this[schemas_data] = new Map()
 	},
+	get directives(){ return get_directives },
 	get folder(){ return get_folders },
 	get(name){ return this.data.has(name) ? this.data.get(name):null },
 	has(name){ return this.data.has(name) },
@@ -27,7 +28,7 @@ function get_export(share){
 	if(fxy.is.text(share)) share = {folder:share}
 	if(!fxy.is.data(share)) return null
 	if(Schemas.has(share.folder)) {
-		//console.log('Getting from Shemas Data')
+		//console.log('Getting from Schemas Data')
 		return Schemas.get(share.folder)
 	}
 	let shared_type = require('./types')(share)
@@ -35,6 +36,14 @@ function get_export(share){
 }
 
 function get_folders(folder){ return fxy.list(folder).folders.filter(name=>name !== '.DS_Store') }
+
+function get_directives(types,folder){
+
+	const directives = types.map(type=>type.directives)
+	const data = fxy.as.one(...directives)
+	return data
+	//return require('./directives')(folder)
+}
 
 function get_resolvers(types,folder){
 	const resolvers = fxy.as.one(...(types.map(type=>type.resolvers)))

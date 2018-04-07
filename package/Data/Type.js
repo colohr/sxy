@@ -22,6 +22,7 @@ function get_field(field,keep_intact){
 }
 
 function get_type(text, setting){
+	//console.log(text)
 	const get_type = content.type(text)
 	const type = get_type(Type)
 	const set_setting = is.data(setting) && (setting.keep_fields_intact || setting.no_storage)

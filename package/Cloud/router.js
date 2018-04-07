@@ -1,3 +1,4 @@
+const fxy = require('fxy')
 const express = require('express')
 const body_parser = require('body-parser')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
@@ -39,9 +40,21 @@ function get_graph(struct){
 	return graphqlExpress(function graph_request(...x){
 		if('context' in struct) graph.context = struct.context(...x)
 		if('root' in struct) graph.rootValue = struct.root(...x)
+		if('directives' in struct || 'extensions' in struct || 'response' in struct) graph.formatResponse = get_graph_formatter(struct)
+		if('fields' in struct) graph.fieldResolver = struct.fields
 		return graph
 	})
-	
+}
+
+function get_graph_formatter(struct){
+	return async function format_response(result,...x){
+		if('response' in struct) result = await struct.response(result, ...x)
+		if('extensions' in struct){
+			const extensions = fxy.as.one(result.extensions,await struct.extensions(result.extensions || {}, result, ...x))
+			if(!fxy.is.empty(extensions)) result.extensions = extensions
+		}
+		return struct.field.data(result,...x)
+	}
 }
 
 function get_ui_options(){
