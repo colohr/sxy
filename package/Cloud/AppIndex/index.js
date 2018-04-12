@@ -23,8 +23,11 @@ class Index{
 		this.struct_path = fxy.join(site_path,sxy.path || Preset.path)
 		this.file = fxy.join(this.struct_path,options.index)
 		this.url = fxy.source.url(this.app_url,this.file)
-		this.struct_client = fxy.is.data(wwi) && wwi.components ? fxy.source.url(this.app_url,'components','struct/index.html'):null
-		
+		if(fxy.is.data(wwi) && wwi.components){
+			this.struct_client = fxy.source.url(this.app_url, 'components', 'struct/index.html')
+
+		}
+
 		this.items = get_items(this,structs)
 	}
 	router(){ return get_router(this) }

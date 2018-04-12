@@ -1,10 +1,14 @@
 const Instruct = {
 	get info(){ return require('./info') },
+	get information(){ return require('./information') },
 	get directives(){ return require('./directives') },
 	get models(){ return require('./models') },
+	get scalars(){ return require('./scalars') },
+	get setting(){ return require('./setting') },
 	template(){ return require('./information.json') },
-	get type(){ return require('./type') },
-	get types(){ return require('./types') }
+	//get type(){ return require('./type') },
+	//get types(){ return require('./types') },
+	get resolvers(){ return require('./resolvers') }
 }
 
 const instruct = new Proxy(get_instruct,{
@@ -12,10 +16,10 @@ const instruct = new Proxy(get_instruct,{
 })
 
 //exports
-module.exports = get_instruct
+module.exports = instruct
 
 //shared actions
 function get_instruct(custom_info){
-	instruct.info(custom_info)
+	Instruct.info(custom_info)
 	return instruct
 }

@@ -1,0 +1,10 @@
+
+type ApiPoints{
+    Site: Text
+    Signals: Text
+    url: Url
+}
+
+extend type Out{
+    Points: ApiPoints
+}

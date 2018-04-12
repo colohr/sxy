@@ -1,12 +1,12 @@
 const fxy = require('fxy')
+const {Data, Structures} = require('../').Pointer
 const Utility = require('../../Utility')
-const Data = require('./Data')
 const pointer_folder = Symbol('pointer folder')
 class PointerInterface{
 	static get get(){ return get_interface }
 	static get pointer(){ return get_pointer }
 	constructor(folder){ this[pointer_folder] = folder }
-	get structure(){ return Data.Structures.get(this) }
+	get structure(){ return Structures.get(this) }
 }
 
 //exports

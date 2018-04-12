@@ -19,7 +19,11 @@ const graph = new Proxy({
 	get language_types(){ return get_language_types() },
 	get names(){ return get_names() },
 	get scalars(){ return get_scalars() },
-	get types(){ return get_types() }
+	get types(){ return get_types() },
+	get definitions(){
+		const fxy = require('fxy')
+		return fxy.read_file_sync(fxy.join(__dirname,'scalars/scalars.graphql'),'utf8')
+	}
 },{
 	get(o,name){
 		if(name in Kind) return Kind[name]

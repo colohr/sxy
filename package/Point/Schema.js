@@ -20,7 +20,11 @@ function get_schema(folder){
 		const struct = sxy(`${folder}/get`)
 		return struct('struct').item.value.getTypeMap()
 	}
-	catch(e){ console.error(e) }
+	catch(e){
+		const schema = require('../Structure').Pointer.Schema
+		return schema.getTypeMap()
+
+	}
 	return null
 }
 

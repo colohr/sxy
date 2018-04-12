@@ -1,8 +1,7 @@
 const fxy = require('fxy')
+const {Data} = require('../').Pointer
 const Utility = require('../../Utility')
 const Interface = require('./Interface')
-const Data = require('./Data')
-
 
 //exports
 module.exports = Interface.pointer

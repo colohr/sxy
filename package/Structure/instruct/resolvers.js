@@ -9,39 +9,28 @@ module.exports = resolvers_export
 //shared actions
 function get_instruct(folder){
 	//return value
-	const values =  paths().map(typepath=>queries(typepath))
+	const locations = fxy.list(folder).folders.filter(name=>name !== '.DS_Store').filter(name=>name !== Info.schema.folder).sort().map(name=>fxy.join(folder, name))
+	const values = locations.map(queries)
 	return {
 		get is(){ return values.map(item=>item.is) },
 		get queries(){ return values.map(item=>item.out) }
 	}
 	
 	//shared actions
-	function paths(){
-		let info = Info.schema
-		return fxy.list(folder).folders
-		          .filter(name=>name !== '.DS_Store')
-		          .filter(name=>name !== info.folder)
-		          .sort()
-		          .map(name=>fxy.join(folder,name))
-	}
-	
-	function queries(typepath) {
-		let info = Info.type
-		let query_file = fxy.join(typepath, info.query_file)
-		return get_instruct_file(query_file)
-	}
+	function queries(location) { return get_instruct_file({location, file: fxy.list(location).files(Info.type.query_file)[0]}) }
 }
 
-function get_instruct_file(file){
+function get_instruct_file(folder){
 	let out = {}
 	let is_types = {}
-	if (fxy.exists(file)) {
+	if(folder.file){
+		const file = fxy.join(folder.location,folder.file)
 		let query = require(`${file}`)
-		if (fxy.is.function(query)) query = query(fxy)
-		if (fxy.is.array(query)) query = fxy.as.one(...query)
-		if (fxy.is.data(query)) {
+		if(fxy.is.function(query)) query = query(fxy)
+		if(fxy.is.array(query)) query = fxy.as.one(...query)
+		if(fxy.is.data(query)){
 			is_types = is.type(query)
-			out = set_query_output(out,query)
+			out = set_query_output(out, query)
 		}
 	}
 	return { out, is:is_types }
@@ -58,6 +47,7 @@ function resolvers_export( resolvers, folder){
 	let mutation = get_resolver('mutation')
 	let subscription = get_resolver('subscription')
 	let data = {query,mutation,subscription}
+
 	
 	//return value
 	return set_resolvers(data)

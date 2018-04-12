@@ -34,5 +34,11 @@
   },
   "signal":{
     "file":"signal.graphql"
+  },
+  "resolver":{
+    "file": "resolver.js"
+  },
+  "definition":{
+    "file":"definition.graphql"
   }
 }

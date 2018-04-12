@@ -1,1 +1,33 @@
-{"author":"colohr","bugs":{"url":"https://github.com/colohr/sxy/issues"},"dependencies":{"apollo-server-express":"^1.3.4","chrono-node":"^1.3.5","fxy":"0.1.723","graphql":"^0.13.2","graphql-tools":"^2.23.1","luxon":"^0.2.11","moment-timezone":"^0.5.11","wxy":"0.0.734"},"devDependencies":{"better-console":"^1.0.0"},"description":"API Toolbox using GraphQL: includes express server, loading of multiple endpoints, schema sharing & more.","homepage":"https://github.com/colohr/sxy#readme","keywords":[],"license":"ISC","main":"./package/index.js","name":"sxy","repository":{"type":"git","url":"git+https://github.com/colohr/sxy.git"},"scripts":{"prepublishOnly":"node ../@colohr/code/publish"},"version":"0.0.755"}
+{
+  "author": "colohr",
+  "bugs": {
+    "url": "https://github.com/colohr/sxy/issues"
+  },
+  "dependencies": {
+    "apollo-server-express": "^1.3.4",
+    "chrono-node": "^1.3.5",
+    "fxy": "0.1.724",
+    "graphql": "^0.13.2",
+    "graphql-tools": "^2.23.1",
+    "luxon": "^0.2.11",
+    "moment-timezone": "^0.5.11",
+    "wxy": "0.0.735"
+  },
+  "devDependencies": {
+    "better-console": "^1.0.0"
+  },
+  "description": "API Toolbox using GraphQL: includes express server, loading of multiple endpoints, schema sharing & more.",
+  "homepage": "https://github.com/colohr/sxy#readme",
+  "keywords": [],
+  "license": "ISC",
+  "main": "./package/index.js",
+  "name": "sxy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colohr/sxy.git"
+  },
+  "scripts": {
+    "prepublishOnly": "node ../@colohr/code/publish"
+  },
+  "version": "0.0.757"
+}

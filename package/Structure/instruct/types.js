@@ -1,72 +1,108 @@
 const fxy = require('fxy')
-const Schemas = require('./Schemas')
-const shared = require('./shared')
-
+const {is} = fxy
+const scalars = require('./scalars')
+const info = require('./information').definition
+const combine = (...x)=>fxy.as.one(...x)
+const types = require('../Pointer').storage('definitions')
+const instructions = require('../Pointer').storage('instructions')
+types.resolvers = require('../Pointer').storage('resolvers')
 
 //exports
-module.exports = types_export
+module.exports = function(information, structure_options){
+	const options = get_options(information, structure_options)
+	let definitions = [].concat(types.get(information.folder))
 
-//shared actions
-function assign_schema(information,schema){
-	if(!fxy.is.data(schema)) schema = {}
-	if(Schemas.has(information.folder)) Object.assign(Schemas.get(information.folder),schema)
-	else Schemas.set(information.folder,schema)
-	return Schemas.get(information.folder)
-}
-
-function assign_definitions(information,set_definitions){
-	let schema = null
-	if(!Schemas.has(information.folder)) schema = assign_schema(information)
-	else schema = Schemas.get(information.folder)
-	if(!('typeDefs' in schema)) schema.typeDefs = Schemas.types(information.folder).map(type=>type.schema)
-	if(set_definitions) schema.typeDefs = set_definitions
-	return schema.typeDefs
-}
-
-function assign_directives(information,set_directives){
-	let schema = null
-	if(!Schemas.has(information.folder)) schema = assign_schema(information)
-	else schema = Schemas.get(information.folder)
-	if(!('schemaDirectives' in schema)) schema.schemaDirectives = Schemas.directives( Schemas.types(information.folder), information.folder )
-	if(set_directives) schema.schemaDirectives = set_directives
-	return schema.schemaDirectives
-}
-
-function assign_resolvers(information,set_resolvers){
-	let schema = null
-	if(!Schemas.has(information.folder)) schema = assign_schema(information)
-	else schema = Schemas.get(information.folder)
-	if(!('resolvers' in schema)) schema.resolvers = Schemas.resolvers( Schemas.types(information.folder), information.folder )
-	if(set_resolvers) schema.resolvers = set_resolvers
-	return schema.resolvers
-}
-
-function types_export(information,structure_options){
-	//const folder = information.folder
-	//const types = get_types(folder)
-	const options = get_options(information,structure_options)
-	const schema = {
-		get typeDefs(){ return assign_definitions(information) },
-		set typeDefs(definitions){ return assign_definitions(information,definitions) },
-		get resolvers(){ return assign_resolvers(information) },
-		set resolvers(resolvers){ return assign_resolvers(information,resolvers) }
+	if(is.array(information.shared)){
+		const shared = information.shared
+		definitions = definitions.concat(shared.map(folder=>types.get(folder)).reduce((list,folder)=>list.concat(folder),[]))
 	}
-	Object.defineProperty(information,'schema', {
+
+	const schema = { typeDefs: Array.from(new Set(definitions)) }
+	if(!information.shared){
+		const value = require('./resolvers')(get_resolvers(information.folder), information.folder)
+		types.resolvers.set(information.folder, value)
+		schema.resolvers = get_resolver_value(information)
+	}
+
+	Object.defineProperty(information, 'schema', {
 		get(){
-			const directives = assign_directives(information,Schemas.directives( Schemas.types(information.folder), information.folder ))
-			return assign(shared(information, schema),options,{schemaDirectives:directives})
-			//get typeDefs(){ return types.map(type=>type.schema) },
-			//get resolvers(){ return get_resolvers( types, folder ) }
-			//set_options()
-			//return set_shared(this,)
+			if(information.shared){ schema.resolvers = get_resolver_value(information) }
+			schema.typeDefs = schema.typeDefs.concat(instructions.get(information.folder))
+			return assign(schema, options)
 		}
 	})
+
 	return information
-	//shared actions
-	
-	
 }
-//Object.assign(data,options)
+
+//module.exports.read_definitions = (structs_folder)=>{
+//	const items = fxy.list(structs_folder).folders
+//	for(const struct of items){
+//		const location = fxy.join(structs_folder,struct)
+//		get_struct_definitions(location)
+//	}
+//	return items.paths
+//}
+
+
+function get_resolvers(folder){
+	let file = fxy.join(folder, `${info.resolver_file}`)
+	let resolver = {}
+	if(fxy.exists(file)) resolver = require(file)
+	let resolvers = [resolver].concat(scalars.resolvers(folder))
+	return fxy.as.one(...resolvers)
+}
+
+
+function get_resolver_value(information){
+	const value = require('./resolvers')(get_resolvers(information.folder), information.folder)
+	types.resolvers.set(information.folder, value)
+	const base = fxy.as.one(types.resolvers.get(information.folder),{})
+	const shared = information.shared ? information.shared.map(item=>types.resolvers.get(item)):null
+	if(shared) return set_resolvers(base,fxy.as.one(...shared))
+	return base
+}
+
+function set_resolvers(resolvers, shared){
+	for(const name in shared){
+		if(['Out', 'In', 'Push'].includes(name) === false){
+			if(name in resolvers) resolvers[name] = combine(shared[name], resolvers[name])
+			else resolvers[name] = shared[name]
+		}
+	}
+	return resolvers
+}
+
+function get_struct_definitions(folder){
+	const names = fxy.list(folder).folders
+	const list = new Set()
+	for(const name of names){
+		const location = fxy.join(folder, name)
+		const items = get_folder_definitions(name, location, folder)
+		for(const item of items) list.add(item)
+	}
+	return types.set(folder, Array.from(list)).get(folder)
+}
+
+function get_folder_definitions(name, folder, x){
+	let files = fxy.list(folder).files(info.file)
+	if(!files[0]) files = fxy.list(folder).files(`${name}.graphql`)
+
+	const items = []
+	items.push(scalars.schema(folder))
+
+	const filename = files[0]
+	if(!filename) return items
+	const file = fxy.join(folder, filename)
+	if(file){
+		const content = fxy.read_file_sync(file, 'utf8')
+		if(name === 'Instruct') instructions.set(x, [content])
+		else items.push(content)
+	}
+	items.name = name
+	return items
+}
+
 
 function assign(...x){ return Object.assign(...x) }
 
@@ -93,10 +129,14 @@ function get_rules(structure_options){
 			//requireResolversForArgs will cause makeExecutableSchema to throw an error if no resolve function is defined for a field that has arguments.
 			requireResolversForArgs: setting.passive !== true,
 			//requireResolversForNonScalar will cause makeExecutableSchema to throw an error if a non-scalar field has no resolver defined. By default, both of these are true, which can help catch errors faster. To get the normal behavior of GraphQL, set both of them to false.
-			requireResolversForNonScalar:false
+			requireResolversForNonScalar:false,
+			requireResolversForAllFields:false,
+			requireResolversForResolveType:false,
+			allowResolversNotInSchema:false
 		},
 		//allowResolversNotInSchema turns off the functionality which throws errors when resolvers are found which are not present in the schema. Defaults to false, to help catch common errors.
-		allowResolversNotInSchema: setting.passive === true
+		allowResolversNotInSchema: setting.passive === true,
+		inheritResolversFromInterfaces:false
 	},setting.resolver_options || {})
 }
 

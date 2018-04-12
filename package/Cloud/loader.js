@@ -11,41 +11,45 @@ class GraphLoader extends EventEmitter{
 		this.graphs = new Map()
 		this.current = 0
 	}
-	async add(graph){
+	add(graph){
 		let struct = {}
 		let pathname = fxy.join(this.path,graph.path)
 		struct.path = graph.path
 		struct.pathname = pathname
 		struct.url = graph.url
 		struct.graph = graph
-		struct.actions = get_actions(graph)
 		this.graphs.set(graph.name,struct)
 		this.current = 0
-		return await this.next()
+		return this.next()
 	}
-	async done(){
+	done(){
 		if(this.finished) return true
 		const app = require('express')()
 		const router = require('./router')
-		let logs = []
+		const logs = []
 		for(let struct of this.graphs.values()){
 			let graph = struct.graph
 			delete struct.graph
-			app.use( struct.pathname, router(graph,this.options) )
+
+			app.use(struct.pathname, router(graph,this.options))
 			logs.push(get_loggable(struct))
 		}
 		console.table(logs)
 		app.structs_index = this.graphs
 		this.emit('done',app)
-		return this.finished = true
+
+		return this.finished = require('../Structure').loaded()
 	}
-	load(){ return this.next() }
-	async next(){
-		if(this.graphs.size === this.structs.length) return await this.done()
+	load(){
+
+		return this.next()
+	}
+	next(){
+		if(this.graphs.size === this.structs.length) return this.done()
 		let items = this.waiting
 		let index = this.current >= items.length ? this.current=0:this.current
 		this.current++
-		return await items[index].graph(this.options,this)
+		return items[index].graph(this.options,this)
 	}
 	get waiting(){ return this.structs.filter(item=>!this.graphs.has(fxy.basename(item.name).trim())) }
 }
@@ -66,24 +70,25 @@ function get_actions(graph){
 	return null
 }
 
+
+
 function get_loggable(item){
 	let data = {}
 	for(let name in item){
+		const value = item[name]
 		switch(name){
-			case 'graph':
-			case 'actions':
-				data[name] = item[name] !== null
-				break
 			case 'path':
-				data.title = item[name].replace(/\//g,'').replace(/-/g,'\n').trim()
-				break
-			case 'pathname':
-				data['@'] = item[name]
-				break
 			case 'url':
 				break
+			case 'graph':
+			case 'actions':
+				data[name] = value !== null
+				break
+			case 'pathname':
+				data['@'] = `${value}\n${item.url}`
+				break
 			default:
-				data[name] = item[name]
+				if(!fxy.is.function(value) || fxy.is.symbol(value)) data[name] = value
 		}
 	}
 	return data

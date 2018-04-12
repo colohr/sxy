@@ -5,7 +5,8 @@ const Pointer = {
 	get folder(){ return require('./folder') },
 	get Interface(){ return require('./Interface') },
 	get pointers(){ return require('./pointers') },
-	get struct(){ return get_struct }
+	get struct(){ return get_struct },
+	get storage(){ return get_storage }
 }
 
 //exports
@@ -35,5 +36,11 @@ function exporter(folder,struct_options){
 		Pointer.pointers.set(folder,structure)
 		return structure
 	}
+}
+
+function get_storage(type){
+	if(!('pointer_storage' in Pointer)) Pointer.pointer_storage = new Map()
+	if(Pointer.pointer_storage.has(type)) return Pointer.pointer_storage.get(type)
+	return Pointer.pointer_storage.set(type, new Map()).get(type)
 }
 

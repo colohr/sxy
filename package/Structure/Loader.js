@@ -20,7 +20,6 @@ class StructureLoader extends StructureBase{
 	get print(){ return get_printer(this) }
 	get types(){ return get_types(this) }
 	get Types(){ return this.get('schema').getTypeMap() }
-	get web_component(){ return this.get('types').web_component }
 }
 
 //exports
@@ -66,10 +65,10 @@ function get_printer(structure){
 }
 
 function get_types(structure){
-	const instruct = require('./instruct')(structure.info)
 	const folder = structure.folder
 	return new Proxy({folder},{
 		get(o,name){
+			const instruct = require('./instruct')(structure.info)
 			if(fxy.is.text(name)) return instruct.type.class(o.folder,name)
 			return null
 		}
@@ -77,13 +76,12 @@ function get_types(structure){
 }
 
 async function load_structure(structure,options){
-	try{ structure.set('schema', await extender(structure,options)) }
+	try{ return set_structure(await extender(structure, options), options) }
 	catch(e){
-		const log = require('better-console')
-		log.error(`Struct: "${structure.name}"`)
-		log.error(e)
+		console.error(`Struct: "${structure.name}"`)
+		console.error(e)
+		return false
 	}
-	return set_structure(structure,options)
 }
 
 function register_library(structure,name){

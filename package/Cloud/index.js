@@ -12,11 +12,16 @@ class SxyCloud extends wxy.Cloud{
 	get link(){ return require('../Point/Link').cloud(this) }
 	start(){
 		if(this.options.sxy.links) require('../Point/Link').cloud(this,false)
+		if(this.options.sxy.api) require('../Point').Api(this)
 		const loader = get_loader(this)
+		if(this.options.sxy.api) loader.api = require('../Point').Api(this)
 		return new Promise(async (success,error)=>{
 			loader.once('done',(structs)=>{
 				this.struct_index = new AppIndex(this.options,structs.structs_index)
 				this.server.use(get_index_router(this.struct_index))
+				if(loader.api) {
+					this.server.use(`/${loader.api.file}`, require('../Point').Api.router(this))
+				}
 				this.server.use(structs)
 				return super.start().then(()=>success(this)).catch(error)
 			})
