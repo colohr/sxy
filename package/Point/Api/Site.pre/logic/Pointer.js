@@ -32,7 +32,7 @@ window.fxy.exports('Points',Points=>{
 				if(o.signals){
 					if(name in o.signals.data){
 						const query = o.signals.data[name]
-						return get_point(o,query,name)
+						return get_point(o,query)
 					}
 				}
 				return null
@@ -54,12 +54,12 @@ window.fxy.exports('Points',Points=>{
 		}
 	}
 	
-	function get_point(pointer, query, field){
-		const sender = point(pointer.endpoint,pointer.headers,field)
+	function get_point(pointer,query){
+		const sender = point(pointer.endpoint,pointer.headers)
 		return (variables,bugs)=>sender(query,variables,bugs)
 	}
 	
-	function point(endpoint, headers, signal){
+	function point(endpoint,headers){
 		return (query,variables,bugs)=>{
 			const input = {query}
 			if(variables) input.variables = variables
@@ -74,13 +74,13 @@ window.fxy.exports('Points',Points=>{
 				if(data) return data
 				throw new Error(`Invalid GraphQL response for endpoint: "${endpoint}"`)
 			}
-			function on_bugs(errors,bugs,throws=false){ return on_point_bugs({endpoint,input, signal},errors,bugs,throws) }
+			function on_bugs(errors,bugs,throws=false){ return on_point_bugs(endpoint,input,errors,bugs,throws) }
 		}
 	}
 	
-	function on_point_bugs({endpoint, input, signal},errors,bugs,throws=false){
+	function on_point_bugs(endpoint,input,errors,bugs,throws=false){
 		console.group(`%cError: ${endpoint}`,'color:red')
-		console.group(`%cSignal -> \n\t${signal}`,'color:darkorange')
+		console.group(`%cSignal -> \n\t${query}`,'color:darkorange')
 		if(input.variables) console.group(`%cInput -> \n\t${JSON.stringify(input.variables,null,2)}`,'color:seagreen')
 		const error = new Error(`GraphQL Error in endpoint: "${endpoint}". ${errors[0].message}`)
 		if(console.table) {

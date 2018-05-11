@@ -1,0 +1,13 @@
+directive @role(
+    allowed: Role = ADMIN,
+) on OBJECT | FIELD_DEFINITION
+
+enum Roles {
+    Any
+
+    Developer
+    Manager
+    Owner
+    User
+    Visitor
+}

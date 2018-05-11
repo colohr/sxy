@@ -45,29 +45,23 @@ function loaded(){
 }
 
 function preload(structs_folder){
+	//const all = Array.from(Pointer.storage('definitions').values()).concat(default_schema)
 	const locations = fxy.list(structs_folder).folders.paths.map(location=>create_structure(location).load())
+	return set_schema()
 
-	console.dir({locations})
-	Pointer.Schema = set_schema()
-	return locations
 	//shared actions
 	function set_schema(){
-		const default_schema = 	[require('./dictionary').definitions,`type Out{ sxy:TF } type In{ sxy:TF } type Push{ sxy:TF } schema{ query: Out mutation:In subscription:Push }`]
-		//const all = Array.from(Pointer.storage('definitions').values()).concat(default_schema)
-		let s = null
-		let list = default_schema
+		const schema = [require('./dictionary').definitions,`type Out{ sxy:TF } type In{ sxy:TF } type Push{ sxy:TF } schema{ query: Out mutation:In subscription:Push }`]
+
 		for(const [name,value] of Pointer.storage('definitions')){
-			try{
-				list = list.concat(value)
-				s = require('graphql').buildSchema(list.map(on_item).join('\n'))
-			}catch(e){
-				console.error(name)
-				console.error(e)
+			try{ Pointer.Schema = require('graphql').buildSchema(schema.concat(value).map(on_item).join('\n')) }
+			catch(e){
+				console.error(`Pre-load: "${name}" ->  ${e.message}`)
 			}
 		}
 
-		console.log(s)
-		return s
+		return locations
+
 		//shared actions
 		function on_item(item){
 			if(fxy.is.array(item)) return item.join('\n')
@@ -76,7 +70,6 @@ function preload(structs_folder){
 		}
 	}
 }
-
 
 function create_structure(location){
 	const Schemas = Pointer.storage('schemas')
@@ -176,7 +169,8 @@ function create_structure(location){
 		function get_resolvers(folder){
 			const file = fxy.join(folder, `${instruct.information.resolver.file}`)
 			const resolver = fxy.exists(file) ? require(file):{}
-			return fxy.as.one(...[resolver].concat(instruct.scalars.resolvers(folder)))
+			const scalars = instruct.scalars.resolvers(folder)
+			return fxy.as.one(...[resolver].concat(scalars))
 		}
 
 		function set_resolvers(resolvers, shared){

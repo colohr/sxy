@@ -9,6 +9,7 @@ const Preset = {
 	"views":"/views",
 	"ui":"/ui"
 }
+
 class Index{
 	constructor(options,structs){
 		if(!('index' in options)) options.index = '/index.json'
@@ -30,7 +31,6 @@ class Index{
 
 		this.items = get_items(this,structs)
 	}
-	router(){ return get_router(this) }
 }
 
 //exports
@@ -38,8 +38,15 @@ module.exports = Index
 
 //shared actions
 function get_items(index,structs){
-	let ui = index[index_options].sxy.ui
-	let items = {}
+	const options = index[index_options].sxy
+	const signals = {
+		get shared(){ return 'files' in this ? this.files : this.files = fxy.tree(this.folder, 'actions.graphql', 'signals.graphql').items.only.filter(filter_private_signal).filter(filter_remove_signal) },
+		folder: options.structs,
+		item(item){ return fxy.tree(fxy.join(this.folder, item.path), 'actions.graphql', 'signals.graphql').items.only.filter(filter_remove_signal) }
+	}
+
+	const ui = options.ui
+	const items = {}
 	for(let i of structs){
 		let name = i[0]
 		let item = i[1]
@@ -53,8 +60,13 @@ function get_items(index,structs){
 		data.name = name
 		data.ui =  fxy.source.url(index.app_url,item.pathname,ui)
 		if(item.actions) data.actions = item.actions
+		else if(options.actions === true) data.actions = { file:`${name}.actions.graphql`, name, content:signals.item(item).map(signal_item).join(' ') }
 		return new IndexItem(data)
 	}
 }
 
 
+function filter_private_signal(item){ return item.name !== 'private.signals.graphql'  }
+function filter_remove_signal(item){ return item.get('path').includes('/remove/') !== true }
+
+function signal_item(item){ return item.content.replace(/\n/g, ' ').replace(/\t/g, ' ').replace(/         /g, ' ').replace(/        /g, ' ').replace(/       /g, ' ').replace(/      /g, ' ').replace(/     /g, ' ').replace(/    /g, ' ').replace(/   /g, ' ').replace(/  /g, ' ') }

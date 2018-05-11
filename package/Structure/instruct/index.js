@@ -6,8 +6,6 @@ const Instruct = {
 	get scalars(){ return require('./scalars') },
 	get setting(){ return require('./setting') },
 	template(){ return require('./information.json') },
-	//get type(){ return require('./type') },
-	//get types(){ return require('./types') },
 	get resolvers(){ return require('./resolvers') }
 }
 
